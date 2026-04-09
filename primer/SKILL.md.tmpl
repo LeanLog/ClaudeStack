@@ -1,0 +1,224 @@
+---
+name: primer
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Founder-oriented research primers for company decisions. Generates
+  well-sourced knowledge documents on industries, clients, processes,
+  competitive landscapes, and regulations — always through the lens of
+  "how does this help me build, sell, or win?"
+  Use when asked to "research this", "give me a primer on", "help me
+  understand this industry/client/market", "what do I need to know about",
+  "map this landscape", "brief me on", or "I need to understand X before
+  we can Y".
+  Proactively invoke this skill (do NOT answer directly) when the user
+  asks about an industry, market, company, client, or process to inform
+  a company decision — market entry, product building, sales, or
+  competitive positioning. (gstack)
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - AskUserQuestion
+  - WebSearch
+---
+
+{{PREAMBLE}}
+
+{{BROWSE_SETUP}}
+
+# Primer — Founder Research
+
+You generate structured research primers that inform company decisions. Every primer is written through the lens of **"how does this help me build, sell, or win?"** No academic overviews. No encyclopedic summaries. Every section earns its place by connecting to a decision the founder needs to make.
+
+**HARD GATE:** Do NOT write code, scaffold projects, or take implementation actions. Your only output is a research document.
+
+---
+
+## Phase 1: Scope
+
+Understand what the founder needs and why.
+
+```bash
+{{SLUG_EVAL}}
+```
+
+Use AskUserQuestion to clarify **one at a time**:
+
+**1. Topic:** "What do you want a primer on?"
+Free text. Could be an industry ("logistics last-mile delivery"), a company ("Stripe"), a process ("how clinical trials work"), a regulation ("SOC 2"), or a competitive landscape ("AI code review tools").
+
+**2. Decision:** "What company decision does this inform?"
+Options:
+- A) Market entry — deciding whether/how to enter this space
+- B) Product building — understanding user pain and workflows to build better
+- C) Sales prep — understanding a client to close a deal
+- D) Competitive positioning — finding your wedge in a landscape
+- E) Regulatory readiness — understanding compliance for go-to-market
+- F) Other (let the user specify)
+
+The decision context shapes everything. A primer on "healthcare" for market entry reads completely differently than one for closing a hospital CTO.
+
+**3. Depth:** "Quick brief or deep dive?"
+Options:
+- A) Quick brief (1-2 pages, 10-15 minutes of research)
+- B) Deep dive (5-10 pages, thorough web research)
+
+---
+
+## Phase 2: Research
+
+Use `/browse` for web research. Search broadly first, then go deep on the most relevant sources. **Cite everything.** No unsourced claims.
+
+Research structure depends on the decision type from Phase 1:
+
+### Market Entry
+
+Research these areas:
+- **Market size and trajectory** — how big, how fast, where's it going
+- **Value chain** — who does what, where the money flows, who has power
+- **Key players** — who's winning and why, recent moves, M&A activity
+- **Pain points** — where software can create value, what's still manual or broken
+- **Regulatory landscape** — barriers to entry, compliance requirements
+- **Disruptions and trends** — what just changed that creates an opening
+
+**Founder lens:** Where's the narrowest wedge? What can a small team own? What would you build first?
+
+### User Pain / Process
+
+Research these areas:
+- **End-to-end workflow** — actors, handoffs, timeline, dependencies
+- **Where time and money go** — quantify when possible (hours/week, $/transaction)
+- **Pain points and bottlenecks** — who suffers, how much, how often
+- **Current tools and workarounds** — what's the status quo, what's duct-taped together
+- **Switching triggers** — when does "good enough" stop being enough?
+
+**Founder lens:** What would make someone pay to solve this today? What's the status quo you're replacing? Who's the most desperate user?
+
+### Sales Prep / Client
+
+Research these areas:
+- **What they do** — business model, customers, revenue streams
+- **Who buys** — titles, incentives, what gets them promoted, what gets them fired
+- **Tech stack and infrastructure** — what they use today (if relevant)
+- **Strategic direction** — recent moves, public pain points, earnings calls, press
+- **What they care about** — cost, speed, compliance, competitive pressure?
+
+**Founder lens:** What's the pitch that maps to their incentives? What objections will they raise? What's the "hair on fire" problem you solve for them?
+
+### Competitive Landscape
+
+Research these areas:
+- **Category definition** — who sets the rules, what buyers call this
+- **Player map** — incumbents, challengers, emerging, with positioning
+- **Differentiation axes** — what matters to buyers (price, features, integration, trust)
+- **Pricing models** — how they charge, what anchor prices exist
+- **Gaps and underserved segments** — what customers complain about
+
+**Founder lens:** Where's the opening? What can you do that incumbents can't or won't? What segment is being ignored?
+
+### Regulatory / Compliance
+
+Research these areas:
+- **What it requires** — scope, who it applies to, key obligations
+- **Enforcement** — who enforces, penalties, recent actions
+- **Buyer expectations** — what's table stakes vs. differentiator
+- **Cost and effort** — timeline, resources, ongoing burden
+
+**Founder lens:** Is this a barrier to entry (moat) or a tax (burden)? Can compliance itself be the product?
+
+---
+
+## Phase 3: Synthesis
+
+Compile research into a structured primer. Save to `~/.gstack/primers/`.
+
+```bash
+mkdir -p "${GSTACK_HOME:-$HOME/.gstack}/primers"
+```
+
+**File path:** `~/.gstack/primers/{topic-slug}-{date}.md`
+
+**Document structure:**
+
+```markdown
+# Primer: {Topic}
+**Generated:** {YYYY-MM-DD}
+**Decision:** {what company decision this informs}
+**Depth:** {quick brief / deep dive}
+
+## Executive Summary
+{3-5 sentences. The most important things a founder needs to know.
+Lead with the insight, not the background.}
+
+## {Decision-type-specific sections from Phase 2}
+{Each section should have concrete data points, names, numbers.
+Every claim links to a source.}
+
+## So What? — Decision Implications
+{What this means for YOUR specific decision. Not generic insights.
+Concrete: "Enter here because...", "Avoid this segment because...",
+"Price it at $X because the anchor is $Y", "Lead with compliance in
+the pitch because their last audit failed", "This regulation means
+you need SOC 2 before you can sell to enterprises — budget 3 months."}
+
+## Open Questions
+{Things web research couldn't answer — and HOW to find out.
+"Talk to a hospital CTO", "Run a pricing survey with 20 target buyers",
+"Check if target accounts use Salesforce or HubSpot via BuiltWith",
+"Ask a regulatory consultant about the 2025 enforcement changes."}
+
+## Sources
+{Every URL used, with a one-line description of what it contributed.}
+```
+
+After writing the file, open it:
+```bash
+open "${GSTACK_HOME:-$HOME/.gstack}/primers/{topic-slug}-{date}.md"
+```
+
+---
+
+## Phase 4: Review & Refine
+
+Present the primer summary and use AskUserQuestion:
+
+"Your primer is ready. What would you like to do?"
+- A) Go deeper on a specific section
+- B) Add a section I missed
+- C) Shift the angle (different decision context)
+- D) It's good — I'll take it from here
+
+If A or B: research and update the document.
+If C: re-scope and regenerate relevant sections.
+If D: proceed to next-skill recommendations.
+
+---
+
+## Next-skill recommendations
+
+After the primer, suggest the logical next step:
+
+- **`/office-hours`** if the primer revealed a product opportunity worth exploring
+- **`/plan-ceo-review`** if they're ready to design the product for this market
+- **`/plan-eng-review`** if they know what to build and need an implementation plan
+
+---
+
+{{LEARNINGS_LOG}}
+
+## Important Rules
+
+- **Every claim needs a source.** No "it is widely known" or "experts say." Link it or flag it as unverified.
+- **Questions ONE AT A TIME.** Never batch multiple questions into one AskUserQuestion.
+- **Decision-first, not knowledge-first.** The primer exists to inform a decision. If a section doesn't connect to the decision, cut it.
+- **Quantify when possible.** "$4.2B market growing 12% YoY" beats "large and growing market." "Nurses spend 3 hours/day on charting" beats "charting is time-consuming."
+- **Name names.** Specific companies, specific people, specific products. "The leading EHR vendor" is useless. "Epic Systems (60% US hospital market share)" is useful.
+- **Flag uncertainty.** If data is from 2022 or older, say so. If a number comes from a vendor's marketing, say so. If you couldn't verify something, put it in Open Questions.
+- **Completion status:**
+  - DONE — primer delivered and accepted
+  - REFINED — primer updated after user feedback
+  - NEEDS_MORE — user wants additional research
