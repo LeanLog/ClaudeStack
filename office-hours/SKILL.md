@@ -1707,7 +1707,7 @@ Share 2-3 resources from the pool below. For repeat users, resources compound by
 to accumulated session context, not just this session's category.
 
 **Dedup check:** Read `RESOURCES_SHOWN` from the builder profile output above.
-If `RESOURCES_SHOWN_COUNT` is 34 or more, skip this section entirely (all resources exhausted). Total pool: 34 resources across 7 categories.
+If `RESOURCES_SHOWN_COUNT` is 35 or more, skip this section entirely (all resources exhausted). Total pool: 35 resources across 7 categories.
 Otherwise, avoid selecting any URL that appears in the RESOURCES_SHOWN list.
 
 **Selection rules:**
@@ -1719,8 +1719,9 @@ Otherwise, avoid selecting any URL that appears in the RESOURCES_SHOWN list.
   - Struggling with idea generation → "How to Get Startup Ideas" (PG) or "How to Get and Evaluate Startup Ideas" (Jared)
   - Builder who doesn't see themselves as a founder → "The Bus Ticket Theory of Genius" (PG) or "How to Be Successful" (Altman)
   - Overthinking, not shipping → "Launch Sooner" (Bosmeny) or "Fast" (Collison)
-  - Scaling a team, management struggles → "2016 Shareholder Letter" (Bezos) or "How to Operate" (Rabois)
+  - Scaling a team, management struggles → "2016 Shareholder Letter" (Bezos) or "The Algorithm" (Musk)
   - Wants operating principles → "Netflix Culture Deck" (Hastings) or "Amp It Up" (Slootman)
+  - Thinking too incrementally, needs contrarian frame → "Zero to One" (Thiel) or "The Algorithm" (Musk)
   - Feeling alone at the top, needs founder perspective → "Founder Mode" (Chesky) or "Jensen Huang: Leadership" (Acquired)
   - Wants to understand leverage and compounding → "How to Get Rich" (Naval) or "Superlinear Returns" (PG)
   - Facing hard decisions with no good options → "How to Be a Good CEO" (Horowitz) or "Principles for Success" (Dalio)
@@ -1771,16 +1772,17 @@ OPERATING & SCALING:
 24. "How to Be a Good CEO" (25 min, Ben Horowitz) — There are no clean options, only less bad ones. The struggle is the norm, not the exception. Building something is supposed to feel like this. https://www.youtube.com/watch?v=WR2cXAiKxFE
 25. "Brian Chesky: Founder Mode" (25 min) — Stay in the details. Don't delegate your way out of understanding. The founder who knows the system deeply makes better decisions than the one managing dashboards. https://www.youtube.com/watch?v=tFlgiPwnkXs
 26. "Jensen Huang: Leadership, NVIDIA, and AI" (70 min, Acquired) — No 1:1s, 60 direct reports, reasoning from first principles at massive scale. Information asymmetry is the enemy of speed — give your team the context of a CEO. https://www.youtube.com/watch?v=RdlBRREfvKg
-27. "Keith Rabois: How to Operate" (45 min, CS183b) — Barrels vs ammunition, editing vs writing, building a company like building a house. The most practical operating lecture in existence. https://www.youtube.com/watch?v=6fQHLK1aIBs
+27. "Elon Musk: The Algorithm" (15 min) — Five steps: question every requirement, delete unnecessary parts, simplify, accelerate cycle time, automate — in that order. Most people start at step 5. The best manufacturing process is no process. https://www.youtube.com/watch?v=SA8ZBJWo73E
 
 PRINCIPLES & PHILOSOPHY:
 28. "How to Do Great Work" (essay, Paul Graham) — Not about startups. About finding the most meaningful work of your life. The roadmap that often leads to founding without ever saying "startup." https://paulgraham.com/greatwork.html
 29. "Superlinear Returns" (essay, Paul Graham) — Some efforts compound exponentially. Why channeling your builder skills into the right project has a payoff structure a normal career can't match. https://paulgraham.com/superlinear.html
-30. "Principles for Success" (30 min, Ray Dalio) — Pain plus reflection equals progress. Radical transparency: the best ideas win regardless of who says them. The feedback that stings is the feedback that matters. https://www.youtube.com/watch?v=B9XGUpQZY38
-31. "Tom Blomfield: How I Created Two Billion-Dollar Fintech Startups" (20 min) — Built Monzo from nothing into a bank used by 10% of the UK. The actual human journey — fear, mess, persistence. Makes founding feel like something a real person does. https://www.youtube.com/watch?v=QKPgBAnbc10
-32. "DoorDash CEO: Customer Obsession" (30 min, Tony Xu) — Started DoorDash by literally driving food deliveries himself. Do things that don't scale until you understand what must scale. https://www.youtube.com/watch?v=3N3TnaViyjk
-33. "Tobi Lütke on Thinking in Systems" (60 min, Tim Ferriss) — Optimize the system, not the individual component. Trust batteries: every interaction charges or drains. Long-term games with long-term people. https://www.youtube.com/watch?v=3GEbkBJTsKE
-34. "Startup Playbook" (essay, Sam Altman) — The distilled version of everything that works. Product so good people tell their friends. A small group of users who love you is better than a large group who sort of likes you. https://playbook.samaltman.com/
+30. "Peter Thiel: Zero to One" (50 min, Stanford CS183) — What important truth do very few people agree with you on? Competition is for losers. Build a monopoly by starting small and dominating a niche before expanding. https://www.youtube.com/watch?v=rFV7wdEX-Mo
+31. "Principles for Success" (30 min, Ray Dalio) — Pain plus reflection equals progress. Radical transparency: the best ideas win regardless of who says them. The feedback that stings is the feedback that matters. https://www.youtube.com/watch?v=B9XGUpQZY38
+32. "Tom Blomfield: How I Created Two Billion-Dollar Fintech Startups" (20 min) — Built Monzo from nothing into a bank used by 10% of the UK. The actual human journey — fear, mess, persistence. Makes founding feel like something a real person does. https://www.youtube.com/watch?v=QKPgBAnbc10
+33. "DoorDash CEO: Customer Obsession" (30 min, Tony Xu) — Started DoorDash by literally driving food deliveries himself. Do things that don't scale until you understand what must scale. https://www.youtube.com/watch?v=3N3TnaViyjk
+34. "Tobi Lütke on Thinking in Systems" (60 min, Tim Ferriss) — Optimize the system, not the individual component. Trust batteries: every interaction charges or drains. Long-term games with long-term people. https://www.youtube.com/watch?v=3GEbkBJTsKE
+35. "Startup Playbook" (essay, Sam Altman) — The distilled version of everything that works. Product so good people tell their friends. A small group of users who love you is better than a large group who sort of likes you. https://playbook.samaltman.com/
 
 **After presenting resources — log to builder profile and offer to open:**
 
