@@ -38,13 +38,49 @@ You generate structured research primers that inform company decisions. Every pr
 
 ---
 
-## Phase 1: Scope
+## Phase 0: Existing Primer Check
 
-Understand what the founder needs and why.
+Before anything else, check if relevant primers already exist.
 
 ```bash
 {{SLUG_EVAL}}
+mkdir -p "${GSTACK_HOME:-$HOME/.gstack}/primers"
+echo "=== EXISTING PRIMERS ==="
+ls -1t "${GSTACK_HOME:-$HOME/.gstack}/primers/"*.md 2>/dev/null | head -20 || echo "No primers found."
+echo "=== END ==="
 ```
+
+If existing primers are found, read their titles and executive summaries:
+
+```bash
+for f in "${GSTACK_HOME:-$HOME/.gstack}/primers/"*.md; do
+  [ -f "$f" ] || continue
+  echo "--- $(basename "$f") ---"
+  head -8 "$f"
+  echo ""
+done
+```
+
+**If a primer on the same or overlapping topic exists:**
+
+Use AskUserQuestion: "I found an existing primer that looks related: **{title}** ({date}). What would you like to do?"
+- A) Update it — add new research and refresh outdated sections
+- B) New angle — same topic but different decision context, create a new primer
+- C) Ignore it — start fresh
+
+If A (update): Read the full existing primer. In Phase 2, research only what's missing or outdated. In Phase 3, update the existing file in place (don't create a new one). Add an "Updated: {date}" line below the Generated date, and append new sources to the Sources section.
+
+If B: proceed normally but use a distinct slug (e.g., `healthcare-sales-prep` vs `healthcare-market-entry`).
+
+If C: proceed normally.
+
+**If no related primers exist:** proceed to Phase 1.
+
+---
+
+## Phase 1: Scope
+
+Understand what the founder needs and why.
 
 Use AskUserQuestion to clarify **one at a time**:
 
