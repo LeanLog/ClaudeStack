@@ -21,6 +21,16 @@ log_entry() {
   echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) $1" >> "$LOG_FILE" 2>/dev/null || true
 }
 
+# ── Always: sync skill symlinks with the skills currently on disk ──
+# Runs synchronously on every session start, independent of the pull/throttle
+# path below. Fast, idempotent, non-fatal. Catches locally-added or renamed
+# skills that would otherwise remain invisible to Claude Code until the next
+# manual ./setup run. Must run BEFORE the auto_upgrade/throttle early-exits so
+# it still works with team-mode off.
+if [ -x "$GSTACK_DIR/bin/gstack-relink" ]; then
+  "$GSTACK_DIR/bin/gstack-relink" >/dev/null 2>&1 || true
+fi
+
 # ── Guard: gstack must be a git repo ──
 if [ ! -d "$GSTACK_DIR/.git" ]; then
   exit 0
