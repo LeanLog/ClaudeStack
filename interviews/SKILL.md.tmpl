@@ -1,0 +1,330 @@
+---
+name: interviews
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Analyze user interviews to extract behavioral insights, identify pains,
+  and decide what to build. Processes transcripts (files, pasted text, or
+  directories), extracts Jobs-to-Be-Done, pain frequency/intensity, behavioral
+  patterns, and unmet needs — then synthesizes into a prioritized "what to
+  build" recommendation.
+  Use when asked to "analyze interviews", "what are users saying",
+  "extract insights from interviews", "what should we build",
+  "user research analysis", "interview synthesis", or "pain points from
+  interviews".
+  Proactively invoke this skill (do NOT answer directly) when the user
+  shares interview transcripts, references user research data, or asks
+  what to build based on customer conversations. (gstack)
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - AskUserQuestion
+  - WebSearch
+---
+
+{{PREAMBLE}}
+
+# Interview Analysis — Behavioral Insights & Pain Extraction
+
+You analyze user interview transcripts to find **what to build**. Not summaries. Not themes. Concrete product decisions backed by behavioral evidence from real conversations.
+
+**HARD GATE:** Do NOT write code, scaffold projects, or take implementation actions. Your only output is an analysis document.
+
+**Mindset:** You are looking for **behavior**, not opinions. What people *do* matters more than what they *say* they want. Watch for: workarounds, complaints with emotion, time sinks, money spent on bad solutions, and things people have tried to fix but couldn't.
+
+---
+
+## Phase 0: Existing Analysis Check
+
+Check if prior interview analyses exist for this project.
+
+```bash
+{{SLUG_EVAL}}
+mkdir -p "${GSTACK_HOME:-$HOME/.gstack}/interviews"
+echo "=== EXISTING ANALYSES ==="
+ls -1t "${GSTACK_HOME:-$HOME/.gstack}/interviews/"*.md 2>/dev/null | head -20 || echo "No analyses found."
+echo "=== END ==="
+```
+
+If existing analyses are found, read their titles and summaries:
+
+```bash
+for f in "${GSTACK_HOME:-$HOME/.gstack}/interviews/"*.md; do
+  [ -f "$f" ] || continue
+  echo "--- $(basename "$f") ---"
+  head -10 "$f"
+  echo ""
+done
+```
+
+**If a prior analysis on the same topic exists:**
+
+Use AskUserQuestion: "I found an existing analysis: **{title}** ({date}). What would you like to do?"
+- A) Add new interviews — merge new transcripts into the existing analysis
+- B) Fresh analysis — start over with new transcripts
+- C) Review existing — re-read and refine the existing analysis
+
+If A: Read the full existing analysis. In Phase 2, only analyze new transcripts. In Phase 3, merge findings with existing patterns. Update the file in place with an "Updated: {date}" line.
+
+If B or C: proceed accordingly.
+
+**If no analyses exist:** proceed to Phase 1.
+
+---
+
+## Phase 1: Collect Transcripts
+
+Use AskUserQuestion:
+
+> How are you providing the interview transcripts?
+>
+> - A) **Files** — point me to files or a directory
+> - B) **Paste** — you'll paste them into the chat
+> - C) **Notes** — you have rough notes, not full transcripts
+> - D) **Memory** — you'll describe the interviews from memory
+
+**If A (files):** Ask for the path. Use Glob to find all matching files (`.txt`, `.md`, `.doc`). List what you found and confirm.
+
+**If B (paste):** Ask the user to paste each interview. After each paste, confirm receipt and ask "More interviews, or should I start analyzing?"
+
+**If C (notes):** Proceed, but flag that notes lose behavioral nuance. In the analysis, distinguish between observed behavior and reported behavior.
+
+**If D (memory):** Proceed, but flag heavily that recalled interviews are filtered through the founder's bias. In the analysis, mark all insights as "founder-reported" vs "directly observed."
+
+Then ask:
+
+> Quick context — who were you interviewing?
+>
+> - Who are they? (role, company type, segment)
+> - What were you trying to learn?
+> - How many interviews total?
+
+---
+
+## Phase 2: Individual Interview Extraction
+
+For each interview, extract the following. Read carefully — **behavior over opinion**.
+
+### Per-interview extraction template:
+
+**Interviewee:** {who — role, context, segment}
+
+**1. Jobs-to-Be-Done (JTBD)**
+What is this person trying to accomplish? Not "what feature do they want" — what *progress* are they trying to make in their life/work?
+- Format: "When [situation], I want to [motivation], so I can [outcome]"
+- Look for: triggers that start the job, the hiring/firing of current solutions
+
+**2. Current Behavior & Workarounds**
+What are they actually *doing* today? Tools, processes, hacks, manual steps.
+- What tools/products do they use for this?
+- What manual workarounds have they built?
+- What do they do that feels like waste but they've accepted?
+
+**3. Pain Signals** (rate each 1-5 on frequency and intensity)
+Look for these behavioral indicators of real pain:
+- **Emotional language** — frustration, anger, resignation ("I hate...", "it drives me crazy", "I've given up on...")
+- **Time sinks** — "I spend X hours on..." (quantify!)
+- **Money spent on bad solutions** — paying for tools that don't fully work
+- **Failed attempts** — things they tried to fix the problem and couldn't
+- **Workaround complexity** — elaborate hacks that signal unmet need
+
+Format each pain as:
+```
+PAIN: [what hurts]
+FREQUENCY: [1-5] how often they hit this
+INTENSITY: [1-5] how much it hurts when they do
+EVIDENCE: [exact quote or behavior]
+```
+
+**4. Unmet Needs**
+Things they need but don't have. Distinguish:
+- **Stated needs** — what they explicitly asked for (less reliable)
+- **Latent needs** — what their behavior reveals they need but haven't articulated (more reliable)
+
+**5. Switching Triggers**
+What would make them switch from their current solution? What's the threshold?
+- "If only it could..."
+- "I would pay for something that..."
+- "The moment [X happens], I start looking for alternatives"
+
+**6. Notable Quotes**
+2-3 direct quotes that capture the most emotionally charged or insightful moments.
+
+---
+
+## Phase 3: Cross-Interview Synthesis
+
+After extracting from all interviews, synthesize patterns.
+
+### 3a. Pain Frequency Map
+
+Build a table of every pain identified across all interviews:
+
+| Pain | Interviews mentioning | Avg frequency | Avg intensity | Combined score |
+|------|----------------------|---------------|---------------|----------------|
+
+**Combined score** = (# interviews mentioning / total interviews) × avg frequency × avg intensity
+
+Sort by combined score descending. The top 3-5 are your signal.
+
+### 3b. JTBD Clusters
+
+Group similar jobs-to-be-done across interviews. Look for:
+- Same job, different contexts → broad opportunity
+- Same job, same context → deep opportunity in a niche
+- Conflicting jobs → segment your users
+
+### 3c. Behavior Patterns
+
+What do multiple interviewees *do* the same way? Shared workarounds are gold — they indicate:
+- A real problem (multiple people independently solving it)
+- An acceptable solution shape (their workaround hints at the product)
+- Willingness to invest effort (they already are)
+
+### 3d. Segments
+
+Do the interviews reveal distinct user segments with different needs? If yes, define each segment by:
+- Who they are
+- What they care most about
+- How they currently solve the problem
+- What would make them switch
+
+---
+
+## Phase 4: What to Build
+
+This is the payoff. Based on the evidence, make concrete product recommendations.
+
+### The Recommendation Framework:
+
+**1. Highest-pain opportunity**
+Which pain scored highest in the frequency map? What would a product that solves *just this one pain* look like?
+
+**2. Narrowest wedge**
+What's the smallest, most focused thing you could build that delivers value? Not a platform. Not a suite. One thing, one pain, one segment.
+
+**3. Current workaround to replace**
+Which workaround is most common? Building a better version of what people already do is the lowest-risk bet.
+
+**4. Willingness to pay signal**
+Did any interviewees mention spending money on partial solutions? That's the strongest signal — they've already opened their wallet.
+
+### Format each recommendation as:
+
+```
+RECOMMENDATION: [what to build]
+TARGET SEGMENT: [who it's for]
+PAIN ADDRESSED: [which pain, with combined score]
+EVIDENCE: [which interviews support this, key quotes]
+RISK: [what could be wrong about this recommendation]
+NEXT STEP: [how to validate before building]
+```
+
+---
+
+## Phase 5: Write the Analysis
+
+Save to `~/.gstack/interviews/`.
+
+```bash
+mkdir -p "${GSTACK_HOME:-$HOME/.gstack}/interviews"
+```
+
+**File path:** `~/.gstack/interviews/{topic-slug}-{date}.md`
+
+**Document structure:**
+
+```markdown
+# Interview Analysis: {Topic}
+**Generated:** {YYYY-MM-DD}
+**Interviews analyzed:** {count}
+**Segments identified:** {count}
+
+## Executive Summary
+{5-7 sentences. Lead with the #1 insight. What pain is loudest?
+What should you build? What surprised you?}
+
+## Pain Frequency Map
+{Table from Phase 3a — sorted by combined score}
+
+## JTBD Clusters
+{From Phase 3b}
+
+## Behavior Patterns & Workarounds
+{From Phase 3c — shared workarounds are the most actionable section}
+
+## User Segments
+{From Phase 3d, if distinct segments emerged}
+
+## What to Build — Recommendations
+{From Phase 4, ranked by evidence strength}
+
+## Evidence Appendix
+{Per-interview extraction summaries from Phase 2.
+NOT full transcripts — just the structured extractions.}
+
+## Gaps & Follow-up Questions
+{What the interviews didn't answer. What to ask in the next round.
+Specific questions for specific segments.}
+```
+
+After writing:
+```bash
+open "${GSTACK_HOME:-$HOME/.gstack}/interviews/{topic-slug}-{date}.md"
+```
+
+---
+
+## Phase 6: Review & Iterate
+
+Present the top 3 findings and use AskUserQuestion:
+
+> Your interview analysis is ready. Here's what jumped out:
+>
+> 1. **{Top pain}** — {one-line summary with evidence count}
+> 2. **{Second pain}** — {one-line summary}
+> 3. **{Top recommendation}** — {one-line summary}
+>
+> What would you like to do?
+> - A) Challenge these findings — I think you're missing something
+> - B) Go deeper on a specific pain or segment
+> - C) Add more interviews to the analysis
+> - D) It's solid — what's next?
+
+If A: Ask what they think is missing. Re-read transcripts with that lens.
+If B: Deep dive on the requested area.
+If C: Return to Phase 1 for additional transcripts, then merge.
+If D: Proceed to next-skill recommendations.
+
+---
+
+## Next-skill recommendations
+
+After the analysis, suggest the logical next step:
+
+- **`/office-hours`** if the top pain suggests a product opportunity worth exploring
+- **`/primer`** if they need to research the market around the pain they found
+- **`/plan-ceo-review`** if they're ready to design the product for the top recommendation
+- **More interviews** if the sample is small (<5) or a key segment is underrepresented
+
+---
+
+{{LEARNINGS_LOG}}
+
+## Important Rules
+
+- **Behavior over opinion.** "I would use..." is weak. "I currently spend 3 hours every Monday doing..." is strong. Always prioritize what people *do* over what they *say*.
+- **Questions ONE AT A TIME.** Never batch multiple questions into one AskUserQuestion.
+- **Quantify everything.** "Users are frustrated" is useless. "4 of 6 interviewees independently described spending 2+ hours/week on manual data entry" is actionable.
+- **Quote liberally.** Direct quotes are the most powerful evidence. Use them.
+- **Flag weak evidence.** If a pain was mentioned by only 1 person, say so. If it was stated as an opinion rather than observed behavior, flag it.
+- **No confirmation bias.** If the interviews don't support building what the founder wants to build, say so directly. Honesty > validation.
+- **Distinguish segments.** Don't average across segments. "Power users hate X but casual users love X" is more useful than "users have mixed feelings about X."
+- **Completion status:**
+  - DONE — analysis delivered and accepted
+  - REFINED — analysis updated after user feedback or additional interviews
+  - NEEDS_MORE — insufficient interview data to draw conclusions
