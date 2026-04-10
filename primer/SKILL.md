@@ -592,16 +592,18 @@ Before anything else, check if relevant primers already exist.
 
 ```bash
 eval "$(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null)"
-mkdir -p "${GSTACK_HOME:-$HOME/.gstack}/primers"
+PRIMERS_DIR="/Users/rodrigo/Library/CloudStorage/GoogleDrive-rodrigo@leanlog.ai/Shared drives/Lean Logistics/Research/primers"
+mkdir -p "$PRIMERS_DIR"
 echo "=== EXISTING PRIMERS ==="
-ls -1t "${GSTACK_HOME:-$HOME/.gstack}/primers/"*.md 2>/dev/null | head -20 || echo "No primers found."
+ls -1t "$PRIMERS_DIR"/*.md 2>/dev/null | head -20 || echo "No primers found."
 echo "=== END ==="
 ```
 
 If existing primers are found, read their titles and executive summaries:
 
 ```bash
-for f in "${GSTACK_HOME:-$HOME/.gstack}/primers/"*.md; do
+PRIMERS_DIR="/Users/rodrigo/Library/CloudStorage/GoogleDrive-rodrigo@leanlog.ai/Shared drives/Lean Logistics/Research/primers"
+for f in "$PRIMERS_DIR"/*.md; do
   [ -f "$f" ] || continue
   echo "--- $(basename "$f") ---"
   head -8 "$f"
@@ -718,13 +720,14 @@ Research these areas:
 
 ## Phase 3: Synthesis
 
-Compile research into a structured primer. Save to `~/.gstack/primers/`.
+Compile research into a structured primer. Save to the LeanLog shared drive primers folder.
 
 ```bash
-mkdir -p "${GSTACK_HOME:-$HOME/.gstack}/primers"
+PRIMERS_DIR="/Users/rodrigo/Library/CloudStorage/GoogleDrive-rodrigo@leanlog.ai/Shared drives/Lean Logistics/Research/primers"
+mkdir -p "$PRIMERS_DIR"
 ```
 
-**File path:** `~/.gstack/primers/{topic-slug}-{date}.md`
+**File path:** `$PRIMERS_DIR/{topic-slug}-{date}.md` (i.e. `/Users/rodrigo/Library/CloudStorage/GoogleDrive-rodrigo@leanlog.ai/Shared drives/Lean Logistics/Research/primers/{topic-slug}-{date}.md`)
 
 **Document structure:**
 
@@ -761,7 +764,8 @@ you need SOC 2 before you can sell to enterprises — budget 3 months."}
 
 After writing the file, open it:
 ```bash
-open "${GSTACK_HOME:-$HOME/.gstack}/primers/{topic-slug}-{date}.md"
+PRIMERS_DIR="/Users/rodrigo/Library/CloudStorage/GoogleDrive-rodrigo@leanlog.ai/Shared drives/Lean Logistics/Research/primers"
+open "$PRIMERS_DIR/{topic-slug}-{date}.md"
 ```
 
 ---
